@@ -1,0 +1,59 @@
+<script src="../tinytest.js"></script>   
+
+<script>
+function toFixed(value, precision) {
+  var numberToString = value.toString();
+  var stringToArray = [];
+  for (var i = 0; i < numberToString.length; i++) {
+    if (numberToString[i] !== ".") {
+    stringToArray.push(numberToString[i]);
+    }
+    if(numberToString[i] === ".") {
+      var decimalAt = i;
+    }
+  }
+  var newDecimal = decimalAt + precision;  
+  var newArray = [];
+  for (var j = 0; j < stringToArray.length; j++) {
+    if (j === newDecimal){
+      newArray.push('.')
+    }
+    newArray.push(stringToArray[j]);
+  }
+  var convertToNumber = Number(newArray.join(''));
+  var numberToDivideBy = Number('1'.padEnd(precision + 1, '0'));
+  return (Math.round(convertToNumber)) / numberToDivideBy;
+};
+toFixed(0.615, 2);
+tests({
+  'It works for toFixed(0.615, 2)':function() {
+    var result = toFixed(0.615, 2);
+    eq(result, 0.62);
+  },
+  'It works for toFixed(10.235, 2)':function() {
+    var result = toFixed(10.235, 2);
+    eq(result, 10.24);
+  },
+  'It works for toFixed(1.005, 2)':function() {
+    var result = toFixed(1.005, 2);
+    eq(result, 1.01);
+  },
+  'It works for precision of 3':function(){
+    var result1 = toFixed(0.0615, 3);
+    var result2 = toFixed(10.0235, 3);
+    var result3 = toFixed(1.0005, 3);
+    eq(result1, 0.062);
+    eq(result2, 10.024);
+    eq(result3, 1.001);
+  },
+  'It works for precision of 1':function() {
+    var result = toFixed(0.615, 1);
+    eq(result, 0.6);
+  },
+  'It works for precision of 0':function() {
+    var result = toFixed(0.615, 0);
+    eq(result, 1);
+  }
+});
+
+</script>
